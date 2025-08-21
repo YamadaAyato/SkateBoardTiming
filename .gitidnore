@@ -1,0 +1,30 @@
+# Unity が自動生成するフォルダ（不要）
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+UserSettings/
+MemoryCaptures/
+
+# Unity Cache
+[Bb]uildCache/
+Artifacts/
+
+# IDE 系
+.vs/
+.idea/
+*.csproj
+*.sln
+*.user
+*.userprefs
+*.tmp
+*.pidb
+
+# OS 系
+.DS_Store
+Thumbs.db
+
+# TextMesh Pro 内の自動生成シェーダー
+Assets/TextMesh Pro/
