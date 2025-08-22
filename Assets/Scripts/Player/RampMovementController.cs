@@ -13,11 +13,11 @@ namespace Player
         public Action OnRampEnd;
 
         [Header("ランプ移動")]
-        [SerializeField] private Transform _rampStart;
-        [SerializeField] private Transform _rampPeak;
-        [SerializeField] private Transform _rampEnd;
-        [SerializeField] private float _rampDuration = 1f;
+        [SerializeField] private float _rampDuration = 1f; 
 
+        private Transform _rampStart; 
+        private Transform _rampPeak; 
+        private Transform _rampEnd;
         private float _rampTimer;
         private bool _isOnRamp;
         private bool _hasReachedpeak;
@@ -25,8 +25,11 @@ namespace Player
         /// <summary>
         ///         ランプ移動初期化メソッド
         /// </summary>
-        public void StartRamp()
+        public void StartRamp(Transform start, Transform peak, Transform end)
         {
+            _rampStart = start;
+            _rampPeak = peak;
+            _rampEnd = end;
             _rampTimer = 0f;
             _isOnRamp = true;
             _hasReachedpeak = false;
