@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Stage;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Player
@@ -6,6 +7,9 @@ namespace Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
+        [Header("ランプ移動用")]
+        [SerializeField] private RampMovementController _rampController;
+
         [Header("次の地点への移動")]
         [SerializeField] private List<Transform> _nextPoints = new List<Transform>();
         [SerializeField] private float _moveSpeed = 5f;
@@ -51,13 +55,15 @@ namespace Player
             {
                 _moveToNext = false;
                 Debug.Log("次の地点に到着！");
+
+                RampPoint ramp = currentTarget.GetComponent<RampPoint>();
+                if (ramp != null)
+                {
+                    _rampController.StartRamp(ramp.start, ramp.peak, ramp.end);
+                }
+
                 _pointsIndex++;
             }
-        }
-
-        private void LanchForce()
-        {
-
         }
     }
 }
