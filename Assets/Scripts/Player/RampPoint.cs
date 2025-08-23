@@ -1,9 +1,9 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace Stage
 {
     /// <summary>
-    /// ƒ‰ƒ“ƒv1‚Â•ª‚Ìî•ñin“_E’¸“_EI“_j
+    /// ãƒ©ãƒ³ãƒ—1ã¤åˆ†ã®æƒ…å ±ï¼ˆå§‹ç‚¹ãƒ»é ‚ç‚¹ãƒ»çµ‚ç‚¹ï¼‰
     /// </summary>
     public class RampPoint : MonoBehaviour
     {
