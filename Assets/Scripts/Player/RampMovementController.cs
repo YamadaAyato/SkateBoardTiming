@@ -8,12 +8,11 @@ namespace Player
     /// </summary>
     public class RampMovementController : MonoBehaviour
     {
-        [Header("イベント")]
-        public Action OnRampPeak;
-        public Action OnRampEnd;
-
         [Header("ランプ移動")]
         [SerializeField] private float _rampDuration = 1f; 
+
+        public event Action OnRampPeak;
+        public event Action OnRampFinished;
 
         private Transform _rampStart; 
         private Transform _rampPeak; 
@@ -74,7 +73,7 @@ namespace Player
             if (t >= 1f)
             {
                 _isOnRamp = false;
-                OnRampEnd?.Invoke();
+                OnRampFinished?.Invoke();
             }
         }
     }
