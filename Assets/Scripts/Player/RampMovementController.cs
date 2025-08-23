@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Player
 {
     /// <summary>
-    ///   スケボーでスロープを移動するためのコントローラー
+    ///         スケボーでスロープを移動するためのコントローラー
     /// </summary>
     public class RampMovementController : MonoBehaviour
     {
