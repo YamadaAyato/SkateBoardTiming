@@ -1,37 +1,40 @@
+ï»¿using System;
 using System.Collections;
 using UnityEngine;
 
 namespace Player
 {
     /// <summary>
-    ///        ƒvƒŒƒCƒ„[‚ÌƒWƒƒƒ“ƒv§Œä
+    ///        ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚¸ãƒ£ãƒ³ãƒ—åˆ¶å¾¡
     /// </summary>
     public class PlayerJumpController : MonoBehaviour
     {
-        [Header("ƒWƒƒƒ“ƒv‚Ì‚‚³")]
+        [Header("ã‚¸ãƒ£ãƒ³ãƒ—ã®é«˜ã•")]
         [SerializeField] private float _baseHeight = 3f;
         [SerializeField] private float _goodHeight = 6f;
         [SerializeField] private float _greatHeight = 9f;
         [SerializeField] private float _perfectHeight = 12f;
 
-        [Header("ƒWƒƒƒ“ƒv‚Ì’·‚³")]
+        [Header("ã‚¸ãƒ£ãƒ³ãƒ—ã®é•·ã•")]
         [SerializeField] private float _baseJumpDuration = 3f;
         [SerializeField] private float _goodJumpDuration = 4f;
         [SerializeField] private float _greatJumpDuration = 5f;
         [SerializeField] private float _perfectJumpDuration = 6f;
 
-        [Header("ƒXƒ[ƒ‚[ƒVƒ‡ƒ“İ’è")]
+        [Header("ã‚¹ãƒ­ãƒ¼ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³è¨­å®š")]
         [SerializeField] private float _slowTimeScale = 0.2f;
         [SerializeField] private float _slowDuration = 2f;
 
-        [Header("ƒWƒƒƒ“ƒv‰ñ“]")]
+        [Header("ã‚¸ãƒ£ãƒ³ãƒ—å›è»¢")]
         [SerializeField] private int _rotAngle = 180;
+
+        public Action OnJumpFinished;
 
         private bool _isJumping;
         private Vector3 _startPos;
 
         /// <summary>
-        ///         ƒWƒƒƒ“ƒvƒXƒ^[ƒgII
+        ///         ã‚¸ãƒ£ãƒ³ãƒ—ã‚¹ã‚¿ãƒ¼ãƒˆï¼ï¼
         /// </summary>
         public void StartJump()
         {
@@ -40,7 +43,7 @@ namespace Player
         }
 
         /// <summary>
-        ///         ƒWƒƒƒ“ƒvˆ—
+        ///         ã‚¸ãƒ£ãƒ³ãƒ—å‡¦ç†
         /// </summary>
         /// <returns></returns>
         private IEnumerator JumpMovement()
@@ -51,13 +54,13 @@ namespace Player
 
             Time.timeScale = _slowTimeScale;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
-            //  ƒXƒ[‰‰o’Ç‰Á—\’è
+            //  ã‚¹ãƒ­ãƒ¼æ¼”å‡ºè¿½åŠ äºˆå®š
 
             yield return new WaitForSecondsRealtime(_slowDuration);
 
-            //  ƒ^ƒCƒ~ƒ“ƒO”»’è
+            //  ã‚¿ã‚¤ãƒŸãƒ³ã‚°åˆ¤å®š
             string result = DebugGetRandomResult();
-            Debug.Log("”»’èŒ‹‰Ê" + result);
+            Debug.Log("åˆ¤å®šçµæœ" + result);
 
             float jumpHeight = _baseHeight;
             float jumpDuration = _baseJumpDuration;
@@ -75,13 +78,13 @@ namespace Player
                     jumpHeight = _perfectHeight;
                     jumpDuration = _perfectJumpDuration;
                     break;
-                default: 
+                default:
                     jumpHeight = _baseHeight;
                     jumpDuration = _baseJumpDuration;
                     break;
             }
 
-            //  ƒXƒ[‰ğœ
+            //  ã‚¹ãƒ­ãƒ¼è§£é™¤
             Time.timeScale = default;
             Time.fixedDeltaTime = default;
 
@@ -95,7 +98,7 @@ namespace Player
                 timer += Time.deltaTime;
                 float t = timer / jumpDuration;
 
-                //  •ú•¨üˆÚ“®
+                //  æ”¾ç‰©ç·šç§»å‹•
                 float yOffset = Mathf.Sin(Mathf.PI * t) * jumpHeight;
                 transform.position = _startPos + new Vector3(0, yOffset, 0);
 
@@ -111,16 +114,18 @@ namespace Player
             transform.rotation = endRot;
 
             _isJumping = false;
-            Debug.Log("ƒWƒƒƒ“ƒvŠ®—¹");
+            Debug.Log("ã‚¸ãƒ£ãƒ³ãƒ—å®Œäº†");
+
+            OnJumpFinished?.Invoke();
         }
 
         /// <summary>
-        ///         ƒfƒoƒbƒO—p‚Ìƒ^ƒCƒ~ƒ“ƒO”»’è
+        ///         ãƒ‡ãƒãƒƒã‚°ç”¨ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°åˆ¤å®š
         /// </summary>
         /// <returns></returns>
         private string DebugGetRandomResult()
         {
-            int r = Random.Range(0, 4);
+            int r = UnityEngine.Random.Range(0, 4);
             return r switch
             {
                 0 => "Miss",
@@ -131,7 +136,7 @@ namespace Player
         }
 
         /// <summary>
-        ///         c‚ç‚È‚¢‚æ‚¤‚É`
+        ///         æ®‹ã‚‰ãªã„ã‚ˆã†ã«ï½
         /// </summary>
         private void OnDestroy()
         {
