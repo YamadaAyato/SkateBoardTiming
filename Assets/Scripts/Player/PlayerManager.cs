@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Player
 {
+    /// <summary>
+    ///         プレイヤーすべての統括
+    /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
@@ -67,11 +70,17 @@ namespace Player
             }
         }
 
+        /// <summary>
+        ///         ランプ移動後の処理
+        /// </summary>
         private void HandleRampFinished()
         {
             _jumpController.StartJump();
         }
 
+        /// <summary>
+        ///         ジャンプ移動後の処理            
+        /// </summary>
         private void HandleJumpFinished()
         {
             MoveToNext();
