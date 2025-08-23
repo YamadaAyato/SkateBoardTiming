@@ -7,7 +7,7 @@ namespace Player
     [RequireComponent(typeof(Rigidbody))]
     public class PlayerManager : MonoBehaviour
     {
-        [Header("ランプ移動用")]
+        [SerializeField] private PlayerJumpController _jumpController;
         [SerializeField] private RampMovementController _rampController;
 
         [Header("次の地点への移動")]
@@ -21,6 +21,7 @@ namespace Player
         private void Awake()
         {
             _rb = GetComponent<Rigidbody>();
+            _moveToNext = true;
         }
 
         private void Update()
@@ -64,6 +65,43 @@ namespace Player
 
                 _pointsIndex++;
             }
+        }
+
+        private void HandleRampFinished()
+        {
+            _jumpController.StartJump();
+        }
+
+        private void HandleJumpFinished()
+        {
+            MoveToNext();
+        }
+
+        private void OnEnable()
+        {
+            if (_rampController != null)
+                _rampController.OnRampFinished += HandleRampFinished;
+
+            if (_jumpController != null)
+                _jumpController.OnJumpFinished += HandleJumpFinished;
+        }
+
+        private void OnDisable()
+        {
+            if (_rampController != null)
+                _rampController.OnRampFinished -= HandleRampFinished;
+
+            if (_jumpController != null)
+                _jumpController.OnJumpFinished -= HandleJumpFinished;
+        }
+
+        private void OnDestroy()
+        {
+            if (_rampController != null)
+                _rampController.OnRampFinished -= HandleRampFinished;
+
+            if (_jumpController != null)
+                _jumpController.OnJumpFinished -= HandleJumpFinished;
         }
     }
 }
