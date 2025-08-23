@@ -11,6 +11,7 @@ namespace Player
     public class PlayerManager : MonoBehaviour
     {
         [SerializeField] private PlayerJumpController _jumpController;
+        [SerializeField] private RampManager _rampManager;
         [SerializeField] private RampMovementController _rampController;
 
         [Header("次の地点への移動")]
@@ -60,10 +61,19 @@ namespace Player
                 _moveToNext = false;
                 Debug.Log("次の地点に到着！");
 
-                RampPoint ramp = currentTarget.GetComponent<RampPoint>();
-                if (ramp != null)
+                if(_rampManager != null)
                 {
-                    _rampController.StartRamp(ramp.start, ramp.peak, ramp.end);
+                    RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
+
+                    if (nearest != null)
+                    {
+                        _rampController.StartRamp(nearest.start, nearest.peak, nearest.end);
+                        return;
+                    }
+                    else
+                    {
+                        Debug.Log("ランプポイントが見つからない");
+                    }
                 }
 
                 _pointsIndex++;
