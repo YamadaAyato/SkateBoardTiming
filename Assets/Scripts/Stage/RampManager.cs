@@ -1,16 +1,16 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 namespace Stage
 {
     /// <summary>
-    ///         •¡”‚Ìƒ‰ƒ“ƒvƒ|ƒCƒ“ƒg‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+    ///         è¤‡æ•°ã®ãƒ©ãƒ³ãƒ—ãƒã‚¤ãƒ³ãƒˆã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
     /// </summary>
     public class RampManager : MonoBehaviour
     {
         [SerializeField] private RampPoint[] _rampPoint;
 
         /// <summary>
-        ///         RampPoint ‚ğ’T‚µ‚Ä•Ô‚·ˆ—
+        ///         RampPoint ã‚’æ¢ã—ã¦è¿”ã™å‡¦ç†
         /// </summary>
         /// <param name="playerPos"></param>
         /// <returns></returns>
