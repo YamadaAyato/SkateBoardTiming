@@ -10,7 +10,6 @@ namespace Player
     {
         [Header("ランプ移動")]
         [SerializeField] private float _rampDuration = 1f;
-        [SerializeField] private bool _useQuadraticBezier = true; // 2次ベジェ曲線を使用するか
         [SerializeField] private AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1); // 速度カーブ
 
         public event Action OnRampPeak;
@@ -21,7 +20,7 @@ namespace Player
         private Transform _rampEnd;
         private float _rampTimer;
         private bool _isOnRamp;
-        private bool _hasReachedpeak;
+        private bool _hasReachedPeak;
 
         /// <summary>
         ///         ランプ移動初期化メソッド
@@ -33,7 +32,7 @@ namespace Player
             _rampEnd = end;
             _rampTimer = 0f;
             _isOnRamp = true;
-            _hasReachedpeak = false;
+            _hasReachedPeak = false;
 
             Debug.Log($"ランプ開始: Start={start.position}, Peak={peak.position}, End={end.position}");
         }
@@ -70,17 +69,20 @@ namespace Player
             transform.rotation = Quaternion.LookRotation(tangent);
 
             //  中間地点到達判定
-            if (!_hasReachedpeak && Mathf.Abs(curveT - 0.5f) < 0.02f)
+            if (!_hasReachedPeak && Mathf.Abs(curveT - 0.5f) < 0.02f)
             {
-                _hasReachedpeak = true;
+                _hasReachedPeak = true;
                 OnRampPeak?.Invoke();
+                Debug.Log("ランプのピークに到達");
             }
 
             //  ランプ終了判定
             if (curveT >= 1f)
             {
                 _isOnRamp = false;
+                transform.position = _rampEnd.position;
                 OnRampFinished?.Invoke();
+                Debug.Log("ランプの終点に到達");
             }
         }
 
