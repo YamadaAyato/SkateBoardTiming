@@ -28,6 +28,7 @@ namespace Player
         private float _rampTimer;
         private bool _isOnRamp;
         private bool _hasReachedPeak;
+        private bool _useGroundCorrectionAtEnd = false;
         private Vector3 _initPosition;
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace Player
             transform.rotation = Quaternion.LookRotation(tangent);
 
             //  中間地点到達判定
-            if (!_hasReachedPeak && Mathf.Abs(curveT - 0.5f) < 0.02f)
+            if (!_hasReachedPeak && curveT >= 0.5f)
             {
                 _hasReachedPeak = true;
                 OnRampPeak?.Invoke();
@@ -88,13 +89,14 @@ namespace Player
             }
 
             //  ランプ終了判定
-            if (curveT >= 1f)
+            if (t >= 1f)
             {
                 _isOnRamp = false;
-                Vector3 finalPos = _useGroundCorrection ? GetGroundCorrectedPosition(_rampEnd.position, 1f) : _rampEnd.position;
+                Vector3 finalPos = (_useGroundCorrection && _useGroundCorrectionAtEnd) ?
+                    GetGroundCorrectedPosition(_rampEnd.position, 1f) : _rampEnd.position;
                 transform.position = finalPos;
                 OnRampFinished?.Invoke();
-                Debug.Log("ランプの終点に到達");
+                Debug.Log($"ランプの終点に到達 -最終位置{this.transform.position} -エンドポイント{_rampEnd.position}");
             }
         }
 
@@ -113,6 +115,13 @@ namespace Player
             {
                 Vector3 groundPos = hit.point + Vector3.up * _playerOffsetHeight;
 
+                // 地面補正後の位置が元の位置より大幅に低い場合は補正を制限
+                float heightDifference = originalPos.y - groundPos.y;
+                if (heightDifference > 2f) // 2ユニット以上低い場合は補正を無視
+                {
+                    Debug.Log($"地面補正をスキップ: 高度差 {heightDifference:F2}");
+                    return originalPos;
+                }
                 if (_groundCorrectionSpeed > 0 && t < 1f)
                 {
                     // ランプ開始直後は初期位置を基準にして、徐々に地面補正を適用
