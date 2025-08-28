@@ -98,6 +98,12 @@ namespace Player
             }
         }
 
+        /// <summary>
+        ///         地面検出して位置補正
+        /// </summary>
+        /// <param name="originalPos"></param>
+        /// <param name="t"></param>
+        /// <returns></returns>
         private Vector3 GetGroundCorrectedPosition(Vector3 originalPos, float t)
         {
             Vector3 rayStart = originalPos + Vector3.up * _groundCheckDistance;
