@@ -85,8 +85,8 @@ namespace Player
             }
 
             //  スロー解除
-            Time.timeScale = default;
-            Time.fixedDeltaTime = default;
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
 
             float timer = 0f;
             Quaternion endRot = initRot * Quaternion.Euler(0, _rotAngle, 0);
