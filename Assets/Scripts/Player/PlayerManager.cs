@@ -94,6 +94,7 @@ namespace Player
         private void HandleJumpFinished()
         {
             MoveToNext();
+            _pointsIndex++;
         }
 
         private void OnEnable()
