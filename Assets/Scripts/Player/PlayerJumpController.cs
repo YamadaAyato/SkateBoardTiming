@@ -140,10 +140,10 @@ namespace Player
         /// </summary>
         private void OnDestroy()
         {
-            if (Time.timeScale != default)
+            if (Time.timeScale != 1f)
             {
-                Time.timeScale = default;
-                Time.fixedDeltaTime = default;
+                Time.timeScale = 1f;
+                Time.fixedDeltaTime = 0.02f;
             }
         }
     }
