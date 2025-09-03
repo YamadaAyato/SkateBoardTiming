@@ -28,17 +28,28 @@ namespace Player
         private float _rampTimer;
         private bool _isOnRamp;
         private bool _hasReachedPeak;
-        private bool _useGroundCorrectionAtEnd = false;
+        private bool _useGroundCorrectionAtEnd;
+        private bool _reverse;
         private Vector3 _initPosition;
 
         /// <summary>
         ///         ランプ移動初期化メソッド
         /// </summary>
-        public void StartRamp(Transform start, Transform peak, Transform end)
+        public void StartRamp(Transform start, Transform peak, Transform end, bool reverse = false)
         {
-            _rampStart = start;
+            if (reverse)
+            {
+                _rampStart = end;
+                _rampEnd = start;
+            }
+            else
+            {
+                _rampStart = start;
+                _rampEnd = end;
+            }
+
             _rampPeak = peak;
-            _rampEnd = end;
+            _reverse = reverse;
             _rampTimer = 0f;
             _isOnRamp = true;
             _hasReachedPeak = false;
