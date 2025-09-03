@@ -73,10 +73,9 @@ namespace Player
                     else
                     {
                         Debug.Log("ランプポイントが見つからない");
+                        _jumpController.StartJump();
                     }
                 }
-
-                _pointsIndex++;
             }
         }
 
@@ -85,6 +84,7 @@ namespace Player
         /// </summary>
         private void HandleRampFinished()
         {
+            Debug.Log("ランプ終了 → ジャンプ開始");
             _jumpController.StartJump();
         }
 
@@ -93,8 +93,9 @@ namespace Player
         /// </summary>
         private void HandleJumpFinished()
         {
+            Debug.Log("ジャンプ終了 → 次の地点へ");
+            _pointsIndex++; 
             MoveToNext();
-            _pointsIndex++;
         }
 
         private void OnEnable()
