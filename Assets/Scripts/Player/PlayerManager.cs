@@ -20,6 +20,7 @@ namespace Player
 
         private int _pointsIndex = 0;
         private bool _moveToNext;
+        private bool _isReturning;
         private Rigidbody _rb;
 
         private void Awake()
@@ -61,7 +62,7 @@ namespace Player
                 _moveToNext = false;
                 Debug.Log("次の地点に到着！");
 
-                if(_rampManager != null)
+                if (_rampManager != null)
                 {
                     RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
 
@@ -84,8 +85,16 @@ namespace Player
         /// </summary>
         private void HandleRampFinished()
         {
-            Debug.Log("ランプ終了 → ジャンプ開始");
-            _jumpController.StartJump();
+            if (_isReturning)
+            {
+                _isReturning = false;
+                MoveToNext();
+            }
+            else
+            {
+                Debug.Log("ランプ終了 → ジャンプ開始");
+                _jumpController.StartJump();
+            }
         }
 
         /// <summary>
@@ -94,8 +103,19 @@ namespace Player
         private void HandleJumpFinished()
         {
             Debug.Log("ジャンプ終了 → 次の地点へ");
-            _pointsIndex++; 
-            MoveToNext();
+            _pointsIndex++;
+
+            RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
+            if (nearest != null)
+            {
+                _isReturning = true;
+                _rampController.StartRamp(nearest.start, nearest.peak, nearest.end, true);
+            }
+            else
+            {
+                // ランプがなければ直接次へ
+                MoveToNext();
+            }
         }
 
         private void OnEnable()
