@@ -705,7 +705,7 @@ MonoBehaviour:
   _playerOffsetHeight: 0.5
   _groundLayer:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   _useGroundCorrection: 1
   _groundCorrectionSpeed: 1
 --- !u!114 &357678784
@@ -1664,7 +1664,7 @@ GameObject:
   - component: {fileID: 1204634575}
   - component: {fileID: 1204634574}
   - component: {fileID: 1204634573}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Arch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
