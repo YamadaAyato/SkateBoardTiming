@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 namespace Stage
 {
@@ -16,19 +17,23 @@ namespace Stage
         /// <returns></returns>
         public RampPoint GetNearestRampPoint(Vector3 playerPos)
         {
-            RampPoint nearest = null;
-            float minDistance = Mathf.Infinity;
+            return _rampPoint
+                .OrderBy(ramp => Vector3.Distance(playerPos, ramp.start.position))
+                .FirstOrDefault();
 
-            foreach (var ramp in _rampPoint)
-            {
-                float distance = Vector3.Distance(playerPos, ramp.start.position);
-                if (distance < minDistance)
-                {
-                    minDistance = distance;
-                    nearest = ramp;
-                }
-            }
-            return nearest;
+            //RampPoint nearest = null;
+            //float minDistance = Mathf.Infinity;
+
+            //foreach (var ramp in _rampPoint)
+            //{
+            //    float distance = Vector3.Distance(playerPos, ramp.start.position);
+            //    if (distance < minDistance)
+            //    {
+            //        minDistance = distance;
+            //        nearest = ramp;
+            //    }
+            //}
+            //return nearest;
         }
     }
 }
