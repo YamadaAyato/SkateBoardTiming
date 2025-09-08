@@ -1,6 +1,7 @@
-﻿using Unity.Cinemachine;
+﻿using System;
+using Unity.Cinemachine;
 using UnityEngine;
-using System;
+using UnityEngine.Splines;
 
 /// <summary>
 ///         スケボーでスロープを移動するためのコントローラー
@@ -8,20 +9,43 @@ using System;
 public class DollyRampMovement : MonoBehaviour
 {
     [Header("ランプ移動設定")]
-    [SerializeField] private CinemachineSplineCart _dollyCart;
     [SerializeField] private float _rampDuration = 2f;
     [SerializeField] private AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
     public event Action OnRampPeak;
     public event Action OnRampFinished;
 
+    private CinemachineSplineCart _currentCart;
+    private SplineContainer _currentSpline;
+    private float _splineLength;
     private float _timer;
     private bool _isMoving;
     private bool _hasReachedPeak;
+    private bool _reverse;
+
+    /// <summary>
+    /// 指定ランプを開始する
+    /// </summary>
+    public void StartRamp(CinemachineSplineCart splineCart, bool reverse = false)
+    {
+        _currentCart = splineCart;
+        _currentSpline = splineCart.Spline;
+        _splineLength = _currentSpline.CalculateLength(); // spline 全体の長さ（m）
+
+        _reverse = reverse;
+        _timer = 0f;
+        _isMoving = true;
+        _hasReachedPeak = false;
+
+        // 開始地点をセット
+        _currentCart.SplinePosition = _reverse ? _splineLength : 0f;
+
+        Debug.Log($"Ramp開始: {_currentCart.gameObject.name}, reverse={_reverse}, length={_splineLength}");
+    }
 
     private void Update()
     {
-        if (_isMoving)
+        if (_isMoving && _currentCart != null)
         {
             RampMovement();
         }
@@ -32,11 +56,11 @@ public class DollyRampMovement : MonoBehaviour
         _timer += Time.deltaTime;
         // ランプ上の進行度を計算
         float t = Mathf.Clamp01(_timer / _rampDuration);
-
         float curveT = _speedCurve.Evaluate(t);
 
-        // スプライン上の正規化された位置を設定
-        _dollyCart.SplinePosition = curveT;
+        // spline 上の距離を計算
+        float distance = curveT * _splineLength;
+        _currentCart.SplinePosition = _reverse ? (_splineLength - distance) : distance;
 
         //  中間地点到達判定
         if (!_hasReachedPeak && t >= 0.5f)
