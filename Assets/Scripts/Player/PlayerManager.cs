@@ -12,7 +12,7 @@ namespace Player
     {
         [SerializeField] private PlayerJumpController _jumpController;
         [SerializeField] private RampManager _rampManager;
-        [SerializeField] private RampMovementController _rampController;
+        [SerializeField] private DollyRampMovement _rampController;
 
         [Header("次の地点への移動")]
         [SerializeField] private List<Transform> _nextPoints = new List<Transform>();
@@ -66,9 +66,9 @@ namespace Player
                 {
                     RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
 
-                    if (nearest != null)
+                    if (nearest != null && nearest.splineCartPrehub != null)
                     {
-                        _rampController.StartRamp(nearest.start, nearest.peak, nearest.end);
+                        _rampController.StartRamp(nearest.splineCartPrehub, true);
                         return;
                     }
                     else
@@ -106,10 +106,11 @@ namespace Player
             _pointsIndex++;
 
             RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
-            if (nearest != null)
+            if (nearest != null && nearest.splineCartPrehub != null)
             {
                 _isReturning = true;
-                _rampController.StartRamp(nearest.start, nearest.peak, nearest.end, true);
+                Debug.Log($"ランプ（逆方向）開始: {nearest.name}");
+                _rampController.StartRamp(nearest.splineCartPrehub, true);
             }
             else
             {
