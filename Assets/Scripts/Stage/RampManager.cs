@@ -11,14 +11,14 @@ namespace Stage
         [SerializeField] private RampPoint[] _rampPoint;
 
         /// <summary>
-        ///         RampPoint を探して返す処理
+        ///         一番近いRampPointを探して返す処理
         /// </summary>
         /// <param name="playerPos"></param>
         /// <returns></returns>
         public RampPoint GetNearestRampPoint(Vector3 playerPos)
         {
             return _rampPoint
-                .OrderBy(ramp => Vector3.Distance(playerPos, ramp.start.position))
+                .OrderBy(ramp => Vector3.Distance(playerPos, ramp.transform.position))
                 .FirstOrDefault();
 
             //RampPoint nearest = null;
