@@ -38,7 +38,7 @@ public class DollyRampMovement : MonoBehaviour
         _hasReachedPeak = false;
 
         // 開始地点をセット
-        _currentCart.SplinePosition = _reverse ? _splineLength : 0f;
+        _currentCart.SplinePosition = _reverse ? 1f : 0f;
 
         Debug.Log($"Ramp開始: {_currentCart.gameObject.name}, reverse={_reverse}, length={_splineLength}");
     }
@@ -58,9 +58,13 @@ public class DollyRampMovement : MonoBehaviour
         float t = Mathf.Clamp01(_timer / _rampDuration);
         float curveT = _speedCurve.Evaluate(t);
 
-        // spline 上の距離を計算
-        float distance = curveT * _splineLength;
-        _currentCart.SplinePosition = _reverse ? (_splineLength - distance) : distance;
+        //// spline 上の距離を計算
+        //float distance = curveT * _splineLength;
+        _currentCart.SplinePosition = _reverse ? (1f - curveT) : curveT;
+
+        // プレイヤーをCartの位置・回転に追従
+        transform.position = _currentCart.transform.position;
+        transform.rotation = _currentCart.transform.rotation;
 
         //  中間地点到達判定
         if (!_hasReachedPeak && t >= 0.5f)
@@ -78,5 +82,4 @@ public class DollyRampMovement : MonoBehaviour
             Debug.Log($"ランプの終点に到達 -最終位置{this.transform.position}");
         }
     }
-
 }
