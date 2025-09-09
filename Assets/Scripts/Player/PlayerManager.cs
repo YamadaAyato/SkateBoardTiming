@@ -68,7 +68,7 @@ namespace Player
 
                     if (nearest != null && nearest.splineCartPrehub != null)
                     {
-                        _rampController.StartRamp(nearest.splineCartPrehub, true);
+                        _rampController.StartRamp(nearest.splineCartPrehub);
                         return;
                     }
                     else
