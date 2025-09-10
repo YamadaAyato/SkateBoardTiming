@@ -12,6 +12,11 @@ public class DollyRampMovement : MonoBehaviour
     [SerializeField] private float _rampDuration = 2f;
     [SerializeField] private AnimationCurve _speedCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
 
+    [Header("地面検出")]
+    [SerializeField] private float _groundCheckjDistance = 5f;
+    [SerializeField] private LayerMask _groundLayer;
+    [SerializeField] private float _playerHeightOffset = 0.5f;
+
     public event Action OnRampPeak;
     public event Action OnRampFinished;
 
