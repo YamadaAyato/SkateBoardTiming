@@ -21,7 +21,6 @@ public class DollyRampMovement : MonoBehaviour
     private float _timer;
     private bool _isMoving;
     private bool _hasReachedPeak;
-    private bool _reverse;
 
     /// <summary>
     /// 指定ランプを開始する
@@ -39,7 +38,7 @@ public class DollyRampMovement : MonoBehaviour
         // 開始地点をセット
         _currentCart.SplinePosition = 0f;
 
-        Debug.Log($"Ramp開始: {_currentCart.gameObject.name}, reverse={_reverse}, length={_splineLength}");
+        Debug.Log($"Ramp開始: {_currentCart.gameObject.name}, length={_splineLength}");
     }
 
     private void Update()
