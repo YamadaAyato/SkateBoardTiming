@@ -116,7 +116,7 @@ namespace Player
                 yield return null;
             }
 
-            transform.position = endPos;
+            transform.position = new Vector3(endPos.x, endPos.y + 0.5f, endPos.z);
             transform.rotation = endRot;
 
             _isJumping = false;
