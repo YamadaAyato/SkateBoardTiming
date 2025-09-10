@@ -66,9 +66,9 @@ namespace Player
                 {
                     RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
 
-                    if (nearest != null && nearest.splineCartPrehub != null)
+                    if (nearest != null && nearest.forwardCart != null)
                     {
-                        _rampController.StartRamp(nearest.splineCartPrehub);
+                        _rampController.StartRamp(nearest.forwardCart);
                         return;
                     }
                     else
@@ -87,7 +87,8 @@ namespace Player
         {
             if (_isReturning)
             {
-                _isReturning = false;
+                Debug.Log("帰りランプ終了 → 次の地点へ");
+                _isReturning = false; // フラグ解除
                 MoveToNext();
             }
             else
@@ -106,11 +107,11 @@ namespace Player
             _pointsIndex++;
 
             RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
-            if (nearest != null && nearest.splineCartPrehub != null)
+            if (nearest != null && nearest.returnCart != null)
             {
                 _isReturning = true;
                 Debug.Log($"ランプ（逆方向）開始: {nearest.name}");
-                _rampController.StartRamp(nearest.splineCartPrehub, true);
+                _rampController.StartRamp(nearest.returnCart);
             }
             else
             {
