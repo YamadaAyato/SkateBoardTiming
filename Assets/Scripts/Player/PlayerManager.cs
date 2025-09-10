@@ -94,7 +94,18 @@ namespace Player
             else
             {
                 Debug.Log("ランプ終了 → ジャンプ開始");
-                _jumpController.StartJump();
+
+                RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
+                if (nearest != null && nearest.returnCart != null)
+                {
+                    // returnCart の位置に着地させる
+                    _jumpController.StartJump(nearest.returnCart.transform);
+                }
+                else
+                {
+                    // ジャンプ先が指定されていない場合は従来通りその場ジャンプ
+                    _jumpController.StartJump();
+                }
             }
         }
 
