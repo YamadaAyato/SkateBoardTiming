@@ -8,6 +8,10 @@ namespace Stage
     /// </summary>
     public class RampPoint : MonoBehaviour
     {
-        public CinemachineSplineCart splineCartPrehub;
+        [Header("行き用カート")]
+        public CinemachineSplineCart forwardCart;
+
+        [Header("帰り用カート")]
+        public CinemachineSplineCart returnCart;
     }
 }
