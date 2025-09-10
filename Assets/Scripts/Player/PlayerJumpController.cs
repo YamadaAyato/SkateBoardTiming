@@ -36,17 +36,17 @@ namespace Player
         /// <summary>
         ///         ジャンプスタート！！
         /// </summary>
-        public void StartJump()
+        public void StartJump(Transform targetPoint = null)
         {
             if (_isJumping) return;
-            StartCoroutine(JumpMovement());
+            StartCoroutine(JumpMovement(targetPoint));
         }
 
         /// <summary>
         ///         ジャンプ処理
         /// </summary>
         /// <returns></returns>
-        private IEnumerator JumpMovement()
+        private IEnumerator JumpMovement(Transform targetPoint)
         {
             _isJumping = true;
             _startPos = transform.position;
@@ -88,6 +88,8 @@ namespace Player
             Time.timeScale = 1f;
             Time.fixedDeltaTime = 0.02f;
 
+            Vector3 endPos = targetPoint != null ? targetPoint.position : _startPos;
+
             float timer = 0f;
             Quaternion endRot = initRot * Quaternion.Euler(0, _rotAngle, 0);
             float jumpRotStart = 0.3f;
@@ -98,9 +100,13 @@ namespace Player
                 timer += Time.deltaTime;
                 float t = timer / jumpDuration;
 
+                // 始点→終点の水平補間
+                Vector3 horizontal = Vector3.Lerp(_startPos, endPos, t);
+
                 //  放物線移動
                 float yOffset = Mathf.Sin(Mathf.PI * t) * jumpHeight;
-                transform.position = _startPos + new Vector3(0, yOffset, 0);
+                transform.position = _startPos
+                    + new Vector3(0, horizontal.y + yOffset, 3);
 
                 if (t >= jumpRotStart && t <= jumpRotEnd)
                 {
@@ -110,7 +116,7 @@ namespace Player
                 yield return null;
             }
 
-            transform.position = _startPos;
+            transform.position = endPos;
             transform.rotation = endRot;
 
             _isJumping = false;
