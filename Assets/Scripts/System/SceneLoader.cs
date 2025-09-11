@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 /// <summary>
 ///         SceneLoadを制御するクラス
@@ -22,7 +23,7 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(LoadAsync(sceneName));
     }
 
-    private System.Collections.IEnumerator LoadAsync(string sceneName)
+    private IEnumerator LoadAsync(string sceneName)
     {
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
         while (!async.isDone)
