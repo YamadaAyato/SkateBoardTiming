@@ -106,7 +106,7 @@ namespace Player
                 //  放物線移動
                 float yOffset = Mathf.Sin(Mathf.PI * t) * jumpHeight;
                 transform.position = _startPos
-                    + new Vector3(0, horizontal.y + yOffset, 3);
+                    + new Vector3(horizontal.x, horizontal.y + yOffset, horizontal.z);
 
                 if (t >= jumpRotStart && t <= jumpRotEnd)
                 {
