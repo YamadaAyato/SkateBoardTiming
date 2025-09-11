@@ -1,14 +1,20 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-///         ƒWƒƒƒ“ƒv‚ÌƒQ[ƒW‚ğ”»’è‚·‚éƒNƒ‰ƒX   
+///         ã‚¸ãƒ£ãƒ³ãƒ—ã®ã‚²ãƒ¼ã‚¸ã‚’åˆ¤å®šã™ã‚‹ã‚¯ãƒ©ã‚¹   
 /// </summary>
 public class JumpGauge : MonoBehaviour
 {
+    [Header("UIç³»")]
     [SerializeField] private Slider _slider;
-    [SerializeField] private float _sliderSpeed = 1f;
+    [SerializeField] private float _slideSpeed = 1f;
+
+    [Header("åˆ¤å®š")]
+    [SerializeField] private float _perfectThreshold = 0.9f;
+    [SerializeField] private float _greatThreshold = 0.75f;
+    [SerializeField] private float _goodthreshold = 0.5f;
 
     public event Action<string> OnGuageResult;
 
@@ -16,12 +22,21 @@ public class JumpGauge : MonoBehaviour
     private bool _isPlaying = false;
 
     /// <summary>
-    ///         ƒQ[ƒW”»’è‚ğn‚ß‚é
+    ///         ã‚²ãƒ¼ã‚¸åˆ¤å®šã‚’å§‹ã‚ã‚‹
     /// </summary>
     public void StartJumpGauge()
     {
         _isPlaying = true;
         _slider.value = 0f;
+        _slider?.gameObject.SetActive(true);
+    }
+
+    public void CancelGuage()
+    {
+        if(!_isPlaying)return;
+        _isPlaying = false;
+        OnGuageResult?.Invoke("Miss");
+        _slider?.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -30,11 +45,11 @@ public class JumpGauge : MonoBehaviour
     }
 
     /// <summary>
-    ///         UI‚ÌƒXƒ‰ƒCƒ_[‚ğ“®‚©‚·
+    ///         UIã®ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å‹•ã‹ã™
     /// </summary>
     private void SliderMove()
     {
-        _value += _sliderSpeed * Time.fixedDeltaTime;
+        _value += _slideSpeed * Time.unscaledDeltaTime;
         if(_value >= 1f)_value = 0f;
 
         _slider.value = _value;
@@ -43,23 +58,24 @@ public class JumpGauge : MonoBehaviour
         {
             Judge(_value);
             _isPlaying = false;
+            _slider?.gameObject.SetActive(false);
         }
     }
 
     /// <summary>
-    ///         ƒ^ƒCƒ~ƒ“ƒO‚Ì”»’è
+    ///         ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã®åˆ¤å®š
     /// </summary>
     /// <param name="value"></param>
     private void Judge(float value)
     {
         string result;
 
-        if (value > 0.9f) result = "Perfect";
-        else if (value > 0.75f) result = "Great";
-        else if (value > 0.5f) result = "Good";
+        if (value > _perfectThreshold) result = "Perfect";
+        else if (value > _greatThreshold) result = "Great";
+        else if (value > _goodthreshold) result = "Good";
         else result = "Miss";
 
-        Debug.Log($"ƒQ[ƒW”»’è; {result}({value * 100:F0}%)");
+        Debug.Log($"ã‚²ãƒ¼ã‚¸åˆ¤å®š; {result}({value * 100:F0}%)");
 
         OnGuageResult?.Invoke(result);
     }
