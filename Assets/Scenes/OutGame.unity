@@ -757,6 +757,7 @@ MonoBehaviour:
   _slowTimeScale: 0.2
   _slowDuration: 2
   _rotAngle: 180
+  _jumpGauge: {fileID: 705052371}
 --- !u!114 &357678786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1744,7 +1745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25fa8b396005e794e99b6cd070e80d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _slider: {fileID: 0}
+  _slider: {fileID: 207307243}
   _slideSpeed: 1
   _perfectThreshold: 0.9
   _greatThreshold: 0.75
