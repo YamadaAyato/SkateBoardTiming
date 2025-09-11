@@ -28,6 +28,9 @@ namespace Player
         [Header("ジャンプ回転")]
         [SerializeField] private int _rotAngle = 180;
 
+        [Header("参照")]
+        [SerializeField] private JumpGauge _jumpGauge;
+
         public Action OnJumpFinished;
 
         private bool _isJumping;
@@ -39,31 +42,33 @@ namespace Player
         public void StartJump(Transform targetPoint = null)
         {
             if (_isJumping) return;
-            StartCoroutine(JumpMovement(targetPoint));
+            StartCoroutine(JumpRoutine(targetPoint));
         }
 
-        /// <summary>
-        ///         ジャンプ処理
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator JumpMovement(Transform targetPoint)
+        private IEnumerator JumpRoutine(Transform targetPoint)
         {
             _isJumping = true;
             _startPos = transform.position;
-            Quaternion initRot = transform.rotation;
 
             Time.timeScale = _slowTimeScale;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
             //  スロー演出追加予定
 
+            _jumpGauge.StartJumpGauge();
             yield return new WaitForSecondsRealtime(_slowDuration);
 
-            //  タイミング判定
-            string result = DebugGetRandomResult();
+            //  スロー解除
+            Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
+        }
+
+        private void OnGaugeResult(string result)
+        {
             Debug.Log("判定結果" + result);
 
             float jumpHeight = _baseHeight;
             float jumpDuration = _baseJumpDuration;
+
             switch (result)
             {
                 case "Good":
@@ -84,13 +89,19 @@ namespace Player
                     break;
             }
 
-            //  スロー解除
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = 0.02f;
+            StartCoroutine(JumpMovement(jumpHeight, jumpDuration));
+        }
 
+        /// <summary>
+        ///         ジャンプ処理
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator JumpMovement(float jumpHeight, float jumpDuration, Transform targetPoint = null)
+        {
             Vector3 endPos = targetPoint != null ? targetPoint.position : _startPos;
 
             float timer = 0f;
+            Quaternion initRot = transform.rotation;
             Quaternion endRot = initRot * Quaternion.Euler(0, _rotAngle, 0);
             float jumpRotStart = 0.3f;
             float jumpRotEnd = 0.7f;
@@ -106,7 +117,7 @@ namespace Player
                 //  放物線移動
                 float yOffset = Mathf.Sin(Mathf.PI * t) * jumpHeight;
                 transform.position = _startPos
-                    + new Vector3(horizontal.x, horizontal.y + yOffset, horizontal.z);
+                    + new Vector3(0, horizontal.y + yOffset, 3);
 
                 if (t >= jumpRotStart && t <= jumpRotEnd)
                 {
@@ -141,6 +152,16 @@ namespace Player
             };
         }
 
+        private void OnEnable()
+        {
+            if (_jumpGauge != null) _jumpGauge.OnGuageResult += OnGaugeResult;
+        }
+
+        private void OnDisable()
+        {
+            if (_jumpGauge != null) _jumpGauge.OnGuageResult -= OnGaugeResult;
+        }
+
         /// <summary>
         ///         残らないように～
         /// </summary>
@@ -151,6 +172,8 @@ namespace Player
                 Time.timeScale = 1f;
                 Time.fixedDeltaTime = 0.02f;
             }
+
+            if (_jumpGauge != null) _jumpGauge.OnGuageResult -= OnGaugeResult;
         }
     }
 }
