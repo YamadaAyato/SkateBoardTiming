@@ -31,6 +31,9 @@ public class JumpGauge : MonoBehaviour
         _slider?.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    ///         時間切れ等強制停止用メソッド
+    /// </summary>
     public void CancelGuage()
     {
         if(!_isPlaying)return;
