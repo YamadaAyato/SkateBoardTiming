@@ -3,43 +3,53 @@ using UnityEngine;
 
 public class TimingNote : MonoBehaviour
 {
-    private Vector3 _center;
-    private float _radius;
-    private float _speed;
+    private RectTransform _rect;
+    private Vector2 _startAnchored;
+    private Vector2 _targetAnchored;
+    private float _duration;
+    private float _timer;
     private bool _active;
 
-    public event Action<TimingNote> OnNoteReached;
+    public float Angle { get; private set; } // degrees (0..360)
+
+    public event Action<TimingNote> OnReached;
 
     /// <summary>
     ///         ƒm[ƒc‰Šú‰»•İ’è
     /// </summary>
-    /// <param name="center"></param>
-    /// <param name="radius"></param>
-    /// <param name="speed"></param>
-    public void Init(Vector3 center, float radius, float speed)
+    public void Init(RectTransform center, RectTransform container,
+                     float radius, float angleDeg, float travelTime)
     {
-        _center = center;
-        _radius = radius;
-        _speed = speed;
-        _active = true;
+        _rect = GetComponent<RectTransform>();
+        _rect.SetParent(container, false);
 
-        transform.position = center;
+        // anchoredPosition ‚ğŠî€‚É“®‚©‚· + ³‹K‰»
+        _startAnchored = center.anchoredPosition;
+        Angle = angleDeg % 360f;
+        if (Angle < 0) Angle += 360f;
+
+        float rad = Angle * Mathf.Deg2Rad;
+        _targetAnchored = _startAnchored
+            + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * radius;
+
+        _rect.anchoredPosition = _startAnchored;
+        _duration = Mathf.Max(0.001f,travelTime);
+        _timer = 0f;
+        _active = true;
     }
 
     private void Update()
     {
         if (!_active) return;
 
-        Vector3 direction = (transform.position - _center).normalized;
-        if (direction == Vector3.zero) direction = Vector3.right;
+        _timer += Time.unscaledDeltaTime;
+        float t = Mathf.Clamp01(_timer / _duration);
+        _rect.anchoredPosition = Vector2.Lerp(_startAnchored, _targetAnchored, t);
 
-        transform.position += direction * _speed * Time.deltaTime;
-
-        // ”¼Œa‚ğ’´‚¦‚½‚çÁ‚·
-        if(Vector3.Distance(_center, transform.position) >= _radius)
+        if(t>= 1f)
         {
             _active = false;
-            OnNoteReached?.Invoke(this);
+            OnReached?.Invoke(this);
         }
     }
 }
