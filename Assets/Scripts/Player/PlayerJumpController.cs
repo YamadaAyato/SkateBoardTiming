@@ -30,6 +30,7 @@ namespace Player
 
         [Header("参照")]
         [SerializeField] private JumpGauge _jumpGauge;
+        [SerializeField] private JumpTimingGameManager _timingGame;
 
         public Action OnJumpFinished;
 
@@ -45,6 +46,11 @@ namespace Player
             StartCoroutine(JumpRoutine(targetPoint));
         }
 
+        /// <summary>
+        ///         判定スタートとタイムスケールの管理
+        /// </summary>
+        /// <param name="targetPoint"></param>
+        /// <returns></returns>
         private IEnumerator JumpRoutine(Transform targetPoint)
         {
             _isJumping = true;
@@ -62,6 +68,10 @@ namespace Player
             Time.fixedDeltaTime = 0.02f;
         }
 
+        /// <summary>
+        ///         判定結果の出力
+        /// </summary>
+        /// <param name="result"></param>
         private void OnGaugeResult(string result)
         {
             Debug.Log("判定結果" + result);
@@ -87,6 +97,11 @@ namespace Player
                     jumpHeight = _baseHeight;
                     jumpDuration = _baseJumpDuration;
                     break;
+            }
+
+            if (_timingGame != null)
+            {
+                _timingGame.StartTimingGame(jumpDuration);
             }
 
             StartCoroutine(JumpMovement(jumpHeight, jumpDuration));
