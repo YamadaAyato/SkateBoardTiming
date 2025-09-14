@@ -12,11 +12,13 @@ public class JumpTimingGameManager : MonoBehaviour
     [Header("参照")]
     [SerializeField] private TimingNote _notePrefabs;
     [SerializeField] private NoteJudgeController _noteJudgeController;
+    [SerializeField] private ScoreManager _scoreManager;
 
     [SerializeField] private float _minTravel = 0.6f;
     [SerializeField] private float _maxTravel = 1.4f;
     [SerializeField] private float _minSpawnInterval = 0.3f;
     [SerializeField] private float _maxSpawnInterval = 1.0f;
+    [SerializeField] private float _perfectDeg = 10f;
     [SerializeField] private float _niceDeg = 25f;
 
     public event Action<string> OnJudgeResult;
@@ -73,8 +75,26 @@ public class JumpTimingGameManager : MonoBehaviour
         float playerAngle = _noteJudgeController.Angle;
         float diff = Mathf.Abs(Mathf.DeltaAngle(noteAngle, playerAngle));
 
-        string result = (diff <= _niceDeg) ? "Nice" : "Miss";
+        string result;
+        if (diff <= _perfectDeg)
+        {
+            result = "Perfect";
+        }
+        else if (diff <= _niceDeg)
+        {
+            result = "Great";
+        }
+        else 
+        {
+            result = "Miss"; 
+        }
+
         Debug.Log($"判定: {result} 角度差= {diff:F1}度");
+
+        if(_scoreManager != null)
+        {
+            _scoreManager.AddScore(result);
+        }
 
         OnJudgeResult?.Invoke(result);
 
