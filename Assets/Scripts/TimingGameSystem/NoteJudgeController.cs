@@ -20,9 +20,10 @@ public class NoteJudgeController : MonoBehaviour
     private void Update()
     {
         Vector2 local;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(_container, Input.mousePosition, null, out local);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle
+            (_container, Input.mousePosition, null, out local);
 
-        // center の anchoredPosition を基準とする（
+        // center の anchoredPosition を基準とする
         Vector2 dir = (local - _center.anchoredPosition);
         if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
         dir.Normalize();
@@ -33,6 +34,10 @@ public class NoteJudgeController : MonoBehaviour
         float ang = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         if (ang < 0) ang += 360f;
         Angle = ang;
+
+        // 中央向くように回転
+        float rotZ = Mathf.Atan2(-dir.y, -dir.x) * Mathf.Rad2Deg;
+        _rect.rotation = Quaternion.Euler(0, 0, rotZ);
     }
 
     /// <summary>
