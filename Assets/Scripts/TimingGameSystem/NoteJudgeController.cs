@@ -1,7 +1,7 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 /// <summary>
-///         ƒvƒŒƒCƒ„[‘¤‚Ìƒm[ƒc”»’è‚ğ‚Â‚©‚³‚Ç‚éƒNƒ‰ƒX
+///         ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼å´ã®ãƒãƒ¼ãƒ„åˆ¤å®šã‚’ã¤ã‹ã•ã©ã‚‹ã‚¯ãƒ©ã‚¹
 /// </summary>
 public class NoteJudgeController : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class NoteJudgeController : MonoBehaviour
         Vector2 local;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(_container, Input.mousePosition, null, out local);
 
-        // center ‚Ì anchoredPosition ‚ğŠî€‚Æ‚·‚éi
+        // center ã® anchoredPosition ã‚’åŸºæº–ã¨ã™ã‚‹ï¼ˆ
         Vector2 dir = (local - _center.anchoredPosition);
         if (dir.sqrMagnitude < 0.0001f) dir = Vector2.right;
         dir.Normalize();
@@ -36,7 +36,7 @@ public class NoteJudgeController : MonoBehaviour
     }
 
     /// <summary>
-    ///         ŠO•”‚©‚ç•K—v‚È‚çŒ»İ‚ÌUIˆÊ’uianchoredj‚ğ•Ô‚·
+    ///         å¤–éƒ¨ã‹ã‚‰å¿…è¦ãªã‚‰ç¾åœ¨ã®UIä½ç½®ã‚’è¿”ã™
     /// </summary>
     public Vector2 GetAnchoredPosition() => _rect.anchoredPosition;
 }
