@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using UnityEngine;
 
 public class TimingNote : MonoBehaviour
@@ -15,7 +15,7 @@ public class TimingNote : MonoBehaviour
     public event Action<TimingNote> OnReached;
 
     /// <summary>
-    ///         ƒm[ƒc‰Šú‰»•İ’è
+    ///         ãƒãƒ¼ãƒ„åˆæœŸåŒ–ï¼†è¨­å®š
     /// </summary>
     public void Init(RectTransform center, RectTransform container,
                      float radius, float angleDeg, float travelTime)
@@ -23,7 +23,7 @@ public class TimingNote : MonoBehaviour
         _rect = GetComponent<RectTransform>();
         _rect.SetParent(container, false);
 
-        // anchoredPosition ‚ğŠî€‚É“®‚©‚· + ³‹K‰»
+        // anchoredPosition ã‚’åŸºæº–ã«å‹•ã‹ã™ + æ­£è¦åŒ–
         _startAnchored = center.anchoredPosition;
         Angle = angleDeg % 360f;
         if (Angle < 0) Angle += 360f;
