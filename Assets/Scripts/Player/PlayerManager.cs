@@ -13,6 +13,7 @@ namespace Player
         [SerializeField] private PlayerJumpController _jumpController;
         [SerializeField] private RampManager _rampManager;
         [SerializeField] private DollyRampMovement _rampController;
+        [SerializeField] private BarrageGameFlow _barrageGameFlow;
 
         [Header("次の地点への移動")]
         [SerializeField] private List<Transform> _nextPoints = new List<Transform>();
@@ -93,18 +94,26 @@ namespace Player
             }
             else
             {
-                Debug.Log("ランプ終了 → ジャンプ開始");
-
-                RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
-                if (nearest != null && nearest.returnCart != null)
+                if (_pointsIndex == _nextPoints.Count - 1)
                 {
-                    // returnCart の位置に着地させる
-                    _jumpController.StartJump(nearest.returnCart.transform);
+                    Debug.Log("最終ランプ終了 → 連打ジャンプ開始！");
+                    _barrageGameFlow.StartFinalJump();
                 }
                 else
                 {
-                    // ジャンプ先が指定されていない場合は従来通りその場ジャンプ
-                    _jumpController.StartJump();
+                    Debug.Log("ランプ終了 → ジャンプ開始");
+
+                    RampPoint nearest = _rampManager.GetNearestRampPoint(this.transform.position);
+                    if (nearest != null && nearest.returnCart != null)
+                    {
+                        // returnCart の位置に着地させる
+                        _jumpController.StartJump(nearest.returnCart.transform);
+                    }
+                    else
+                    {
+                        // ジャンプ先が指定されていない場合は従来通りその場ジャンプ
+                        _jumpController.StartJump();
+                    }
                 }
             }
         }
