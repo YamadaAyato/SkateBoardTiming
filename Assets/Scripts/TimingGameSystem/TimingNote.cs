@@ -10,7 +10,7 @@ public class TimingNote : MonoBehaviour
     private float _timer;
     private bool _active;
 
-    public float Angle { get; private set; } // degrees (0..360)
+    public float Angle { get; private set; }
 
     public event Action<TimingNote> OnReached;
 
