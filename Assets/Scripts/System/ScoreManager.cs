@@ -76,6 +76,33 @@ public class ScoreManager : MonoBehaviour
         _comboCount = 0;
     }
 
+    /// <summary>
+    ///         連打ゲームスコア加算
+    /// </summary>
+    /// <param name="mashCount"></param>
+    public void AddMashScore(int mashCount)
+    {
+        int baseScore = 0;
+
+        if (mashCount < 10)
+        {
+            baseScore = 100;
+        }
+        else if (mashCount >= 60 && mashCount < 80)
+        {
+            baseScore = 1000;
+        }
+        else
+        {
+            baseScore = mashCount * 10;
+        }
+
+        _currentScore += baseScore;
+        UpdateUi();
+
+        Debug.Log($"Mash結果: {mashCount}回 → {baseScore}点, 累計スコア:{_currentScore}");
+    }
+
     private void UpdateUi()
     {
         if (_scoreText != null)
