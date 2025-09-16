@@ -50,13 +50,15 @@ public class BarrageJumpController : MonoBehaviour
             float t = Mathf.Clamp01(elapsed / _jumpDuration);
 
             Vector3 pos = Vector3.Lerp(start, targetPos, t);
-            pos.y = _jumpHeight * Mathf.Sin(Mathf.PI * t);
+            float jumpOffset = _jumpHeight * Mathf.Sin(Mathf.PI * t);
+            pos.y = Mathf.Lerp(start.y, targetPos.y, t) + jumpOffset;
             _rb.MovePosition(pos);
 
-            Vector3 dir = (targetPos - _rb.position).normalized;
+            Vector3 dir = targetPos - _rb.position;
+            dir.y = 0f;
             if (dir.sqrMagnitude > 0.01f)
             {
-                Quaternion rot = Quaternion.LookRotation(dir);
+                Quaternion rot = Quaternion.LookRotation(dir.normalized,Vector3.up);
                 _rb.MoveRotation(rot);
             }
 
