@@ -9,6 +9,7 @@ using UnityEngine;
 public class BarrageGameController : MonoBehaviour
 {
     [SerializeField] private TMP_Text _barrageText;
+    [SerializeField] private float _animDiamater = 1.5f;
 
     private int _count;
     private bool _isActive;
@@ -65,6 +66,6 @@ public class BarrageGameController : MonoBehaviour
     {
         _barrageText.transform.DOKill();
         _barrageText.transform.localScale = Vector3.one;
-        _barrageText.transform.DOScale(1.1f, 0.1f).SetLoops(2, LoopType.Yoyo);
+        _barrageText.transform.DOScale(_animDiamater, 0.1f).SetLoops(2, LoopType.Yoyo);
     }
 }
