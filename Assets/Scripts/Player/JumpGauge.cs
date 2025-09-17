@@ -36,7 +36,7 @@ public class JumpGauge : MonoBehaviour
     /// </summary>
     public void CancelGuage()
     {
-        if(!_isPlaying)return;
+        if (!_isPlaying) return;
         _isPlaying = false;
         OnGuageResult?.Invoke("Miss");
         _slider?.gameObject.SetActive(false);
@@ -53,11 +53,11 @@ public class JumpGauge : MonoBehaviour
     private void SliderMove()
     {
         _value += _slideSpeed * Time.unscaledDeltaTime;
-        if(_value >= 1f)_value = 0f;
+        if (_value >= 1f) _value = 0f;
 
         _slider.value = _value;
 
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
             Judge(_value);
             _isPlaying = false;
