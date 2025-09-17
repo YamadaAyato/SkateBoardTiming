@@ -106,9 +106,9 @@ public class ScoreManager : MonoBehaviour
     private void UpdateUi()
     {
         if (_scoreText != null)
-            _scoreText.text = $"Score : {_currentScore}";
+            _scoreText.text = $"スコア : {_currentScore}";
 
         if (_comboText != null)
-            _comboText.text = _comboCount > 0 ? $"Combo : {_comboCount}" : "";
+            _comboText.text = _comboCount > 0 ? $"{_comboCount}コンボ!!" : "";
     }
 }
