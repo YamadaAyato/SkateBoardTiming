@@ -18,8 +18,10 @@ namespace Player
         [Header("次の地点への移動")]
         [SerializeField] private List<Transform> _nextPoints = new List<Transform>();
         [SerializeField] private float _moveSpeed = 5f;
+        [SerializeField] private float _rotateTime = 1f;
 
         private int _pointsIndex = 0;
+        private float _timer = 0f;
         private bool _moveToNext;
         private bool _isReturning;
         private Rigidbody _rb;
@@ -53,10 +55,13 @@ namespace Player
                 return;
             }
 
+            _timer += Time.fixedDeltaTime;
+            float t = Mathf.Clamp01(_timer / _rotateTime);
             Transform currentTarget = _nextPoints[_pointsIndex];
 
             transform.position = Vector3.MoveTowards(
                 this.transform.position, currentTarget.position, _moveSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(this.transform.rotation, currentTarget.rotation,t);
 
             if (Vector3.Distance(transform.position, currentTarget.position) < 0.05f)
             {
