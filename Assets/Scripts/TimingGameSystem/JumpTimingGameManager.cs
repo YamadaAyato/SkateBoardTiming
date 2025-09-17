@@ -13,7 +13,9 @@ public class JumpTimingGameManager : MonoBehaviour
     [SerializeField] private TimingNote _notePrefabs;
     [SerializeField] private NoteJudgeController _noteJudgeController;
     [SerializeField] private ScoreManager _scoreManager;
+    [SerializeField] private JudgeResultDisplay _judgeResultDisplay;
 
+    [Header("ゲーム設定")]
     [SerializeField] private float _minTravel = 0.6f;
     [SerializeField] private float _maxTravel = 1.4f;
     [SerializeField] private float _minSpawnInterval = 0.3f;
@@ -29,7 +31,8 @@ public class JumpTimingGameManager : MonoBehaviour
     private void Start()
     {
         //　半径の計算
-        if (_outerCircle != null) _radius = _outerCircle.rect.width * 0.5f;
+        if (_outerCircle != null)
+            _radius = _outerCircle.rect.width * 0.5f;
     }
 
     public void StartTimingGame(float jumpDuration)
@@ -84,17 +87,19 @@ public class JumpTimingGameManager : MonoBehaviour
         {
             result = "Great";
         }
-        else 
+        else
         {
-            result = "Miss"; 
+            result = "Miss";
         }
 
         Debug.Log($"判定: {result} 角度差= {diff:F1}度");
 
-        if(_scoreManager != null)
-        {
+        if (_scoreManager != null)
             _scoreManager.AddScore(result);
-        }
+
+        if (_judgeResultDisplay != null)
+            _judgeResultDisplay.ShowJudgeResult(
+                result, note.transform.position);
 
         OnJudgeResult?.Invoke(result);
 
