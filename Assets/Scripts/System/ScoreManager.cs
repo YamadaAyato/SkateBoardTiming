@@ -103,6 +103,9 @@ public class ScoreManager : MonoBehaviour
         Debug.Log($"Mash結果: {mashCount}回 → {baseScore}点, 累計スコア:{_currentScore}");
     }
 
+    /// <summary>
+    ///         UI更新
+    /// </summary>
     private void UpdateUi()
     {
         if (_scoreText != null)
@@ -111,4 +114,10 @@ public class ScoreManager : MonoBehaviour
         if (_comboText != null)
             _comboText.text = _comboCount > 0 ? $"{_comboCount}コンボ!!" : "";
     }
+
+    /// <summary>
+    ///         最終スコア取得
+    /// </summary>
+    /// <returns></returns>
+    public int GetFinalScore() => _currentScore;
 }
