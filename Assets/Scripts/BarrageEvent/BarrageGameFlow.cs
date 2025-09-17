@@ -5,6 +5,7 @@ public class BarrageGameFlow : MonoBehaviour
     [SerializeField] private BarrageGameController _barGameCon;
     [SerializeField] private BarrageJumpController _barJumpCon;
     [SerializeField] private ScoreManager _scoreManager;
+    [SerializeField] private SceneLoader _sceneLoader;
     [SerializeField] private Transform _jumpTarget;
 
     private void Start()
@@ -21,10 +22,13 @@ public class BarrageGameFlow : MonoBehaviour
         _barGameCon.OnBarrageGameFinished += (count) =>
         {
             _scoreManager.AddMashScore(count);
-            // 後でリザルトかなんか追加
+            _sceneLoader.LoadScene("Result");
         };
     }
 
+    /// <summary>
+    ///         最終ジャンプをスタートする際に最初に呼び出し
+    /// </summary>
     public void StartFinalJump()
     {
         _barJumpCon.StartBarrageJump(_jumpTarget.position);
