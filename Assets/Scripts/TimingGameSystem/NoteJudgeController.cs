@@ -20,8 +20,8 @@ public class NoteJudgeController : MonoBehaviour
     private void Update()
     {
         Vector2 local;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle
-            (_container, Input.mousePosition, null, out local);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _container, Input.mousePosition, null, out local);
 
         // center の anchoredPosition を基準とする
         Vector2 dir = (local - _center.anchoredPosition);
