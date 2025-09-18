@@ -10,6 +10,8 @@ public class BarrageGameFlow : MonoBehaviour
 
     private void Start()
     {
+        _scoreManager.ResetScore();
+
         _barJumpCon.OnBarrageJumpStarted += () =>
         {
             Debug.Log("ジャンプ開始 → 連打ゲーム開始！！");
@@ -22,6 +24,11 @@ public class BarrageGameFlow : MonoBehaviour
         _barGameCon.OnBarrageGameFinished += (count) =>
         {
             _scoreManager.AddMashScore(count);
+
+            int finalScore = _scoreManager.GetFinalScore();
+            PlayerPrefs.SetInt("FinalScore", finalScore);
+            PlayerPrefs.Save();
+
             _sceneLoader.LoadScene("Result");
         };
     }
