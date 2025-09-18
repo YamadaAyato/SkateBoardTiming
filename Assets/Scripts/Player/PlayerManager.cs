@@ -141,11 +141,34 @@ namespace Player
                 _isReturning = true;
                 Debug.Log($"ランプ（逆方向）開始: {nearest.name}");
                 _rampController.StartRamp(nearest.returnCart);
+                _animator.Play("SkateRuning");
             }
             else
             {
-                // ランプがなければ直接次へ
                 MoveToNext();
+            }
+        }
+
+        /// <summary>
+        ///         ジャンプの高さによってアニメーション変えます
+        /// </summary>
+        /// <param name="result"></param>
+        private void HandleJumpEvaluated(string result)
+        {
+            switch (result)
+            {
+                case "Perfect":
+                    _animator.Play("PerfectJump");
+                    break;
+                case "Great":
+                    _animator.Play("SkateRunning");
+                    break;
+                case "Good":
+                    _animator.Play("SkateRunning");
+                    break;
+                default:
+                    _animator.Play("SkateRunning");
+                    break;
             }
         }
 
@@ -155,7 +178,10 @@ namespace Player
                 _rampController.OnRampFinished += HandleRampFinished;
 
             if (_jumpController != null)
+            { 
                 _jumpController.OnJumpFinished += HandleJumpFinished;
+                _jumpController.OnJumpEvaluated += HandleJumpEvaluated;
+            }
         }
 
         private void OnDisable()
@@ -164,7 +190,10 @@ namespace Player
                 _rampController.OnRampFinished -= HandleRampFinished;
 
             if (_jumpController != null)
+            {
                 _jumpController.OnJumpFinished -= HandleJumpFinished;
+                _jumpController.OnJumpEvaluated -= HandleJumpEvaluated;
+            }
         }
 
         private void OnDestroy()
@@ -173,7 +202,10 @@ namespace Player
                 _rampController.OnRampFinished -= HandleRampFinished;
 
             if (_jumpController != null)
+            {
                 _jumpController.OnJumpFinished -= HandleJumpFinished;
+                _jumpController.OnJumpEvaluated -= HandleJumpEvaluated;
+            }
         }
     }
 }
