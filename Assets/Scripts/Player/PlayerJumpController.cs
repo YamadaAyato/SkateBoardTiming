@@ -32,7 +32,8 @@ namespace Player
         [SerializeField] private JumpGauge _jumpGauge;
         [SerializeField] private JumpTimingGameManager _timingGame;
 
-        public Action OnJumpFinished;
+        public event Action OnJumpFinished;
+        public event Action<string> OnJumpEvaluated;
 
         private bool _isJumping;
         private Vector3 _startPos;
@@ -75,6 +76,8 @@ namespace Player
         private void OnGaugeResult(string result)
         {
             Debug.Log("判定結果" + result);
+
+            OnJumpEvaluated?.Invoke(result);
 
             float jumpHeight = _baseHeight;
             float jumpDuration = _baseJumpDuration;
