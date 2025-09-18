@@ -14,6 +14,7 @@ namespace Player
         [SerializeField] private RampManager _rampManager;
         [SerializeField] private DollyRampMovement _rampController;
         [SerializeField] private BarrageGameFlow _barrageGameFlow;
+        [SerializeField] private Animator _animator;
 
         [Header("次の地点への移動")]
         [SerializeField] private List<Transform> _nextPoints = new List<Transform>();
@@ -58,6 +59,8 @@ namespace Player
             _timer += Time.fixedDeltaTime;
             float t = Mathf.Clamp01(_timer / _rotateTime);
             Transform currentTarget = _nextPoints[_pointsIndex];
+            _animator.Play("Skating");
+            _animator.SetBool("Move", true);
 
             transform.position = Vector3.MoveTowards(
                 this.transform.position, currentTarget.position, _moveSpeed * Time.deltaTime);
@@ -75,6 +78,7 @@ namespace Player
                     if (nearest != null && nearest.forwardCart != null)
                     {
                         _rampController.StartRamp(nearest.forwardCart);
+                        _animator.SetBool("Move",false);
                         return;
                     }
                     else
