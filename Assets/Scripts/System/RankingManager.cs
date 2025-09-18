@@ -8,7 +8,7 @@ public class RankingManager : MonoBehaviour
 {
     public static RankingManager Instance { get; private set; }
 
-    private List<(string playerName, int score)> _ranking = new List<(string, int)>();
+    private List<ScoreEntry> _ranking = new List<ScoreEntry>();
 
     private void Awake()
     {
@@ -18,24 +18,22 @@ public class RankingManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         LoadRanking();
     }
 
     public void AddNewScore(string name, int score)
     {
-        _ranking.Add((name, score));
+        _ranking.Add(new ScoreEntry(name,score));
         _ranking.Sort((a, b) => b.score.CompareTo(a.score));
 
-        // Å‘å5Œ‚Ü‚Å•ÛŽ
         if (_ranking.Count > 5)
             _ranking.RemoveAt(_ranking.Count - 1);
 
         SaveRanking();
     }
 
-    public List<(string playerName, int score)> GetRanking()
+    public List<ScoreEntry> GetRanking()
     {
         return _ranking;
     }
@@ -47,6 +45,7 @@ public class RankingManager : MonoBehaviour
             PlayerPrefs.SetString($"Ranking_Name_{i}", _ranking[i].playerName);
             PlayerPrefs.SetInt($"Ranking_Score_{i}", _ranking[i].score);
         }
+
         PlayerPrefs.SetInt("Ranking_Count", _ranking.Count);
         PlayerPrefs.Save();
     }
@@ -60,7 +59,7 @@ public class RankingManager : MonoBehaviour
         {
             string name = PlayerPrefs.GetString($"Ranking_Name_{i}", "???");
             int score = PlayerPrefs.GetInt($"Ranking_Score_{i}", 0);
-            _ranking.Add((name, score));
+            _ranking.Add(new ScoreEntry(name, score));
         }
     }
 }
