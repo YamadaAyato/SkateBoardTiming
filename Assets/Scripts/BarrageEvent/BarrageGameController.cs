@@ -27,7 +27,7 @@ public class BarrageGameController : MonoBehaviour
         _isActive = true;
 
         _barrageText.gameObject.SetActive(true);
-        _barrageText.text = "連打しろ！！！！！";
+        _barrageText.text = "連打しろ！！！";
 
 
         // duration後に強制終了
