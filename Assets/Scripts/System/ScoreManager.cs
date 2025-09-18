@@ -116,6 +116,16 @@ public class ScoreManager : MonoBehaviour
     }
 
     /// <summary>
+    ///         スコアとコンボをリセット
+    /// </summary>
+    public void ResetScore()
+    {
+        _currentScore = 0;
+        _comboCount = 0;
+        UpdateUi();
+    }
+
+    /// <summary>
     ///         最終スコア取得
     /// </summary>
     /// <returns></returns>
