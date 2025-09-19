@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using TMPro;
 
 /// <summary>
 ///         ジャンプのゲージを判定するクラス   
@@ -10,6 +12,8 @@ public class JumpGauge : MonoBehaviour
     [Header("UI系")]
     [SerializeField] private Slider _slider;
     [SerializeField] private float _slideSpeed = 1f;
+    [SerializeField] private TMP_Text _resultText;
+    [SerializeField] private float _resultDisplayTime = 1f;
 
     [Header("判定")]
     [SerializeField] private float _perfectThreshold = 0.9f;
@@ -19,7 +23,7 @@ public class JumpGauge : MonoBehaviour
     public event Action<string> OnGuageResult;
 
     private float _value;
-    private bool _isPlaying = false;
+    private bool _isPlaying;
 
     /// <summary>
     ///         ゲージ判定を始める
@@ -27,6 +31,7 @@ public class JumpGauge : MonoBehaviour
     public void StartJumpGauge()
     {
         _isPlaying = true;
+        _value = 0f;
         _slider.value = 0f;
         _slider?.gameObject.SetActive(true);
     }
@@ -59,6 +64,7 @@ public class JumpGauge : MonoBehaviour
 
         if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
         {
+            SEManager.Instance?.Play("SF決定音1", 0.8f);
             Judge(_value);
             _isPlaying = false;
             _slider?.gameObject.SetActive(false);
@@ -81,5 +87,33 @@ public class JumpGauge : MonoBehaviour
         Debug.Log($"ゲージ判定; {result}({value * 100:F0}%)");
 
         OnGuageResult?.Invoke(result);
+        ShowResult(result);
     }
+
+    /// <summary>
+    ///         DOTweenで判定結果をフェード表示
+    /// </summary>
+    private void ShowResult(string result)
+    {
+        if (_resultText == null) return;
+
+        _resultText.gameObject.SetActive(true);
+        _resultText.DOKill();
+
+        _resultText.text = result;
+        switch (result)
+        {
+            case "Perfect": _resultText.color = new Color(1f, 1f, 0f, 0f); break;
+            case "Great": _resultText.color = new Color(0f, 1f, 0f, 0f); break;
+            case "Good": _resultText.color = new Color(0f, 0.5f, 1f, 0f); break;
+            case "Miss": _resultText.color = new Color(1f, 0f, 0f, 0f); break;
+        }
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(_resultText.DOFade(1f, 0.2f))
+           .AppendInterval(_resultDisplayTime)
+           .Append(_resultText.DOFade(0f, 0.5f))
+           .OnComplete(() => _resultText.gameObject.SetActive(false));
+    }
+
 }
