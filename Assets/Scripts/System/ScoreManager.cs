@@ -88,13 +88,17 @@ public class ScoreManager : MonoBehaviour
         {
             baseScore = 100;
         }
-        else if (mashCount >= 60 && mashCount < 80)
+        else if (mashCount < 50)
         {
             baseScore = 1000;
         }
+        else if (mashCount <= 100)
+        {
+            baseScore = 2000;
+        }
         else
         {
-            baseScore = mashCount * 10;
+            baseScore = mashCount * 20;
         }
 
         _currentScore += baseScore;
