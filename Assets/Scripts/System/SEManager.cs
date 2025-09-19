@@ -24,6 +24,11 @@ public class SEManager : MonoBehaviour
     public void Play(string seName, float volume = 1f)
     {
         AudioClip clip = System.Array.Find(_seClips, c => c.name == seName);
+        if (clip == null)
+        {
+            Debug.LogWarning($"SEManager: {seName} ‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ (”z—ñ‚É“ü‚Á‚Ä‚¢‚È‚¢‰Â”\«)");
+            return;
+        }
 
         _seAudioSource.PlayOneShot(clip, volume);
     }
