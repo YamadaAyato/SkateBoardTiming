@@ -82,10 +82,12 @@ public class JumpTimingGameManager : MonoBehaviour
         if (diff <= _perfectDeg)
         {
             result = "Perfect";
+            SEManager.Instance?.Play("判定音", 0.8f);
         }
         else if (diff <= _niceDeg)
         {
             result = "Great";
+            SEManager.Instance?.Play("判定音", 0.8f);
         }
         else
         {
