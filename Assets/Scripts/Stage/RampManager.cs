@@ -20,20 +20,6 @@ namespace Stage
             return _rampPoint
                 .OrderBy(ramp => Vector3.Distance(playerPos, ramp.transform.position))
                 .FirstOrDefault();
-
-            //RampPoint nearest = null;
-            //float minDistance = Mathf.Infinity;
-
-            //foreach (var ramp in _rampPoint)
-            //{
-            //    float distance = Vector3.Distance(playerPos, ramp.start.position);
-            //    if (distance < minDistance)
-            //    {
-            //        minDistance = distance;
-            //        nearest = ramp;
-            //    }
-            //}
-            //return nearest;
         }
     }
 }
